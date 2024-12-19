@@ -1,10 +1,11 @@
 from ttkbootstrap import Window, Label, Entry, Button, LabelFrame, Treeview, Frame, PRIMARY, DANGER, OUTLINE, Notebook, \
-    SUCCESS, WARNING, INFO, LIGHT
+    SUCCESS, WARNING, INFO, LIGHT, SECONDARY
 from ttkbootstrap.dialogs import Messagebox
 from datetime import datetime
 from pathlib import Path
 import os
 import shutil
+
 
 window = Window(title="Desktop Explorer", themename="cyborg", iconphoto="image/filepic.png")
 window.grid_rowconfigure(2, weight=1)
@@ -71,14 +72,15 @@ notebook.grid(row=1, column=1, columnspan=3, pady=(0, 10), padx=10, sticky="nsew
 frame1 = Frame(notebook)
 frame2 = Frame(notebook)
 frame3 = Frame(notebook)
-frame4= Frame(notebook)
+frame4 = Frame(notebook)
 notebook.add(frame1, text="Search")
 notebook.add(frame2, text="New Folder")
 notebook.add(frame3, text="Select Path(copy,move)")
-notebook.add(frame4,text="Download Manager")
+notebook.add(frame4, text="Download Manager")
 frame1.grid_columnconfigure(1, weight=1)
 frame2.grid_columnconfigure(1, weight=1)
 frame3.grid_columnconfigure(1, weight=1)
+frame4.grid_columnconfigure(1, weight=1)
 
 
 def search():
@@ -138,7 +140,7 @@ new_folder_label = Label(frame2, text="New Folder", padding=10, bootstyle=SUCCES
 new_folder_label.grid(row=0, column=0, sticky="w")
 new_folder_entry = Entry(frame2, bootstyle=SUCCESS)
 new_folder_entry.grid(row=0, column=1, padx=(0, 10), sticky="ew")
-create_button = Button(frame2, text="Create", bootstyle=OUTLINE + SUCCESS, command=create_folder)
+create_button = Button(frame2, text="Create", bootstyle=SUCCESS, command=create_folder)
 create_button.grid(row=0, column=2, padx=10)
 
 button_menu = LabelFrame(window, text="Button Menu")
@@ -169,10 +171,12 @@ def copy():
 copy_button = Button(button_menu, text="Copy", bootstyle=OUTLINE + SUCCESS, command=copy)
 copy_button.grid(row=0, column=0, pady=(0, 10), padx=(10, 0))
 
+
 def move():
     shutil.move(source_paths_entry.get(), destination_entry.get())
 
-move_button = Button(button_menu, text="Move", bootstyle=OUTLINE + WARNING,command=move)
+
+move_button = Button(button_menu, text="Move", bootstyle=OUTLINE + WARNING, command=move)
 move_button.grid(row=1, column=0, pady=(0, 10), padx=(10, 0))
 
 
@@ -188,28 +192,43 @@ def delete():
 
 
 delete_button = Button(button_menu, text="Delete", bootstyle=OUTLINE + DANGER, command=delete)
-delete_button.grid(row=0, column=1, pady=(0, 10), padx=(10, 0),sticky="w")
+delete_button.grid(row=0, column=1, pady=(0, 10), padx=(10, 0), sticky="w")
+
 
 def rename():
     path_lib = Path(source_paths_entry.get())
     path_lib.rename(destination_entry.get())
 
-rename_button = Button(button_menu, text="Rename", bootstyle=OUTLINE + INFO,command=rename)
-rename_button.grid(row=1, column=1, pady=(0, 10), padx=(10, 0),sticky="w")
+
+rename_button = Button(button_menu, text="Rename", bootstyle=OUTLINE + INFO, command=rename)
+rename_button.grid(row=1, column=1, pady=(0, 10), padx=(10, 0), sticky="w")
 
 source_paths_label = Label(frame3, text="Source Paths", padding=10, bootstyle=WARNING)
 source_paths_label.grid(row=0, column=0, sticky="w")
 source_paths_entry = Entry(frame3, bootstyle=LIGHT)
 source_paths_entry.grid(row=0, column=1, padx=(0, 10), sticky="ew")
-create_button = Button(frame3, text="Select", bootstyle=OUTLINE + WARNING, command=select_source_path)
+create_button = Button(frame3, text="Select", bootstyle=WARNING, command=select_source_path)
 create_button.grid(row=0, column=2, padx=10)
 
 destination_label = Label(frame3, text="Destination Path", padding=10, bootstyle=PRIMARY)
 destination_label.grid(row=1, column=0, sticky="w")
 destination_entry = Entry(frame3, bootstyle=LIGHT)
 destination_entry.grid(row=1, column=1, padx=(0, 10), sticky="ew")
-create_button = Button(frame3, text="Select", bootstyle=OUTLINE + PRIMARY, command=select_destination_path)
+create_button = Button(frame3, text="Select", bootstyle=PRIMARY, command=select_destination_path)
 create_button.grid(row=1, column=2, padx=10)
+
+url_label = Label(frame4, text="URL", bootstyle=PRIMARY)
+url_label.grid(row=0, column=0, pady=10, padx=10, sticky="e")
+url_entry = Entry(frame4, bootstyle=PRIMARY)
+url_entry.grid(row=0, column=1, padx=(0, 10), sticky="ew")
+
+# def download(url):
+#     response = requests.get(url)
+#     if response.ok:
+#         pass
+
+download_button = Button(frame4, text="Download")
+download_button.grid(row=0, column=2, padx=10)
 
 # def load_file_to_treeview(treeview):
 #     path = "C:\\Program Files"
